@@ -1,0 +1,909 @@
+CIRCLE  COLLISION
+
+walldirection = point_direction(obj_wall_circle.x,obj_wall_circle.y, x,y)
+//walldirection2 = point_direction(obj_wall_circle.x,obj_wall_circle.y, -x,-y) 
+
+//0, 360
+
+/*if walldirection2> walldirection
+    {
+    if (walldirection +180) > direction && direction > walldirection torque = 1 //positive 
+    if walldirection > direction  && direction > 0 || 360 > direction && direction > walldirection -180 torque = 0 //negative
+    }
+
+if ! walldirection2 > walldirection
+    {    
+
+    if walldirection < direction || direction < walldirection -180 torque = 0 //negative
+    }
+*/
+
+if (walldirection - direction) = 180 || (walldirection - direction) = 0 direction += 180
+
+if speed > 0
+    {
+        if (walldirection +180) > direction && direction > walldirection
+            {
+                //torque = 1 //forward positive
+                collisionpoint = 0
+            }
+    }
+if speed > 0
+    {
+        if walldirection > direction && direction > walldirection -180
+            {
+                //torque = -1 //forward negative
+                collisionpoint = 1
+            }
+    }
+    
+if speed < 0
+    {
+        if (walldirection +180) > direction && direction > walldirection
+            {
+                //torque = -1 //backward negative
+                collisionpoint = 2
+            }
+    }
+if speed < 0
+    {
+        if walldirection > direction && direction > walldirection -180
+            {
+                //torque = 1 //backward positive
+                collisionpoint = 3
+            }
+    }
+
+    
+if collisionpoint = 0 angleadder = 296.565  //63.435
+if collisionpoint = 1 angleadder = 63.435  //296.565
+if collisionpoint = 2 angleadder = 243.435  //243.435
+if collisionpoint = 3 angleadder = 116.565  //116.565
+    
+walldirection = point_direction(obj_wall_circle.x,obj_wall_circle.y, x - 37.777*cos((direction + angleadder)*pi/180),y + 37.777*sin((direction + angleadder)*pi/180))
+ 
+
+
+//St00f that werks
+
+if speed > 0
+    {
+        if (walldirection +180) > direction && direction > walldirection
+            {
+                torque = 1 //forward positive
+            }
+    }
+if speed > 0
+    {
+        if walldirection > direction && direction > walldirection -180
+            {
+                torque = -1 //forward negative
+            }
+    }
+    
+if speed < 0
+    {
+        if (walldirection +180) > direction && direction > walldirection
+            {
+                torque = -1 //backward negative
+            }
+    }
+if speed < 0
+    {
+        if walldirection > direction && direction > walldirection -180
+            {
+                torque = 1 //backward positive
+            }
+    }
+
+if (walldirection - direction) = 0
+    {
+    torque = 0
+    direction += 180
+    }
+
+if speed > 0 forward = 1
+if speed < 0 forward = -1
+    
+theta = abs(walldirection - direction)    
+    
+//theta = abs(walldirection - direction)
+
+//if theta >= 180 theta -= 180
+
+//if theta < 0 theta += 180
+    
+if can_collide1 = 1 direction += 2*(90-theta)*torque*forward//*inside //*dampening
+
+can_collide1 = 0
+alarm[11] = 1
+
+WALL COLLISION
+
+walldirection = 90
+
+if speed > 0
+    {
+        if (walldirection +180) > direction && direction > walldirection
+            {
+                torque = 1 //forward positive
+            }
+    }
+if speed > 0
+    {
+        if walldirection > direction && direction > walldirection -180
+            {
+                torque = -1 //forward negative
+            }
+    }
+    
+if speed < 0
+    {
+        if (walldirection +180) > direction && direction > walldirection
+            {
+                torque = -1 //backward negative
+            }
+    }
+if speed < 0
+    {
+        if walldirection > direction && direction > walldirection -180
+            {
+                torque = 1 //backward positive
+            }
+    }
+
+if (walldirection - direction) = 0
+    {
+    torque = 0
+    direction += 180
+    }
+
+if speed > 0 forward = 1
+if speed < 0 forward = -1
+    
+theta = abs(walldirection - direction)    
+    
+//theta = abs(walldirection - direction)
+
+//if theta >= 180 theta -= 180
+
+//if theta < 0 theta += 180
+    
+direction += 2*(90-theta)*torque*forward//*inside //*dampening
+
+LAPS FINISH
+
+//Loss
+
+if laps mod 1 == 0 if direction > 180 if speed > 0 laps -= .25
+
+if laps mod 1 == 0 if direction < 180 if speed < 0 laps -= .25
+
+//if laps = -1 if direction > 180 laps = -1.25
+
+//if laps = 0 if direction > 180 laps = -0.25
+
+//if laps = 1 if direction > 180 laps = 0.75
+
+//if laps = 2 if direction > 180 laps = 1.75
+
+//if laps = 3 if direction > 180 laps = 2.75
+
+//if laps = 4 if direction > 180 laps = 3.75
+
+//if laps = 5 if direction > 180 laps = 4.75
+
+//Gain
+
+if (laps + .25) mod 1 == 0
+    {
+    if direction < 180
+        {
+        if speed > 0
+            {
+            laps += .25
+            landmineammo += 1
+            
+            }
+        }
+    }
+
+if (laps + .25) mod 1 == 0
+    {
+    if direction > 180
+        {
+        if speed < 0
+            {
+            laps += .25
+            landmineammo += 1
+            
+            }
+        }
+    }
+
+//if laps = -1.25 if direction < 180 laps = -1
+
+//if laps = -0.25 if direction < 180 laps = 0
+
+//if laps = 0.75 if direction < 180 laps = 1
+
+//if laps = 1.75 if direction < 180 laps = 2
+
+//if laps = 2.75 if direction < 180 laps = 3
+
+//if laps = 3.75 if direction <180 laps = 4
+
+//if laps = 4.75 if direction < 180 laps = 5
+
+LAPS 1
+
+//Loss
+
+if laps mod 1 == 0 if direction > 180 if speed > 0 laps -= .25
+
+if laps mod 1 == 0 if direction < 180 if speed < 0 laps -= .25
+
+//if laps = -1 if direction > 180 laps = -1.25
+
+//if laps = 0 if direction > 180 laps = -0.25
+
+//if laps = 1 if direction > 180 laps = 0.75
+
+//if laps = 2 if direction > 180 laps = 1.75
+
+//if laps = 3 if direction > 180 laps = 2.75
+
+//if laps = 4 if direction > 180 laps = 3.75
+
+//if laps = 5 if direction > 180 laps = 4.75
+
+//Gain
+
+if (laps + .25) mod 1 == 0
+    {
+    if direction < 180
+        {
+        if speed > 0
+            {
+            laps += .25
+            landmineammo += 1
+            
+            }
+        }
+    }
+
+if (laps + .25) mod 1 == 0
+    {
+    if direction > 180
+        {
+        if speed < 0
+            {
+            laps += .25
+            landmineammo += 1
+            
+            }
+        }
+    }
+
+//if laps = -1.25 if direction < 180 laps = -1
+
+//if laps = -0.25 if direction < 180 laps = 0
+
+//if laps = 0.75 if direction < 180 laps = 1
+
+//if laps = 1.75 if direction < 180 laps = 2
+
+//if laps = 2.75 if direction < 180 laps = 3
+
+//if laps = 3.75 if direction <180 laps = 4
+
+//if laps = 4.75 if direction < 180 laps = 5
+
+LAPS 2
+
+//Gain
+
+if (laps + .75) mod 1 == 0
+    {
+    if speed > 0
+        {
+        if direction > 180 
+            {
+            laps += .25
+            }
+        }
+    }
+    
+if (laps + .75) mod 1 == 0
+    {
+    if speed < 0
+        {
+        if direction < 180 
+            {
+            laps += .25
+            }
+        }
+    }
+
+/*if laps = -2.75 if direction > 180 laps = -2.5
+
+if laps = -1.75 if direction > 180 laps = -1.5
+
+if laps = -0.75 if direction > 180 laps = -0.5
+
+if laps = 0.25 if direction > 180 laps = 0.5
+
+if laps = 1.25 if direction > 180 laps = 1.5
+
+if laps = 2.25 if direction > 180 laps = 2.5
+
+if laps = 3.25 if direction > 180 laps = 3.5*/
+
+//Loss
+
+if (laps + .5) mod 1 == 0
+    {
+    if speed > 0
+        {
+        if direction < 180
+            {
+            laps -= .25
+            }
+        }
+    }
+
+if (laps + .5) mod 1 == 0
+    {
+    if speed < 0
+        {
+        if direction > 180
+            {
+            laps -= .25
+            }
+        }
+    } 
+
+/*if laps = -2.5 if direction < 180 laps = -2.75
+
+if laps = -1.5 if direction < 180 laps = -1.75
+
+if laps = -0.5 if direction < 180 laps = -0.75
+
+if laps = 0.5 if direction < 180 laps = 0.25
+
+if laps = 1.5 if direction < 180 laps = 1.25
+
+if laps = 2.5 if direction < 180 laps = 2.25
+
+if laps = 3.5 if direction < 180 laps = 3.25
+
+LAPS 3
+
+//Gain
+
+if (laps + .5) mod 1 == 0
+    {
+    if speed > 0
+        {
+        if 270 > direction && direction > 90
+            {
+            laps += .25
+            }
+        }
+    }
+ 
+    
+if (laps + .5) mod 1 == 0
+    {
+    if speed < 0
+        {
+        if 270 < direction || direction < 90
+            {
+            laps += .25
+            }
+        }
+    }
+
+    
+
+/*if laps = -2.5 if 270 > direction && direction > 90 laps = -2.25
+
+if laps = -1.5 if 270 > direction && direction > 90 laps = -1.25
+
+if laps = -0.5 if 270 > direction && direction > 90 laps = -0.25
+
+if laps = 0.5 if 270 > direction && direction > 90 laps = 0.75
+
+if laps = 1.5 if 270 > direction && direction > 90 laps = 1.75
+
+if laps = 2.5 if 270 > direction && direction > 90 laps = 2.75
+
+if laps = 3.5 if 270 > direction && direction > 90 laps = 3.75*/
+
+//Loss
+
+if (laps + .25) mod 1 == 0
+    {
+    if speed > 0
+        {
+        if 270 < direction || direction < 90
+            {
+            laps -= .25
+            }
+        }
+    }
+ 
+    
+if (laps + .25) mod 1 == 0
+    {
+    if speed < 0
+        {
+        if 270 > direction && direction > 90
+            {
+            laps -= .25
+            }
+        }
+    }
+
+/*if laps = -2.25
+    {
+    if direction > 270 or direction < 90  
+        {
+        laps = -2.5
+        }
+    }
+
+if laps = -1.25 
+    {
+    if direction > 270 or direction < 90
+        {
+        laps = -1.5
+        }
+    }
+    
+if laps = -0.25 
+    {
+    if direction > 270 or direction < 90 
+        {
+        laps = -0.5
+        }
+    }
+    
+if laps = 0.75 
+    {
+    if direction > 270 or direction < 90 
+        {
+        laps = 0.5
+        }
+    }
+
+if laps = 1.75
+    {
+    if direction > 270 or direction < 90 
+        {
+        laps = 1.5
+        }
+    }
+
+if laps = 2.75 
+    {
+    if direction > 270 or direction < 90 
+        {
+        laps = 2.5
+        }
+    }
+    
+if laps = 3.75 
+    {
+    if direction > 270 or direction < 90 
+        {
+        laps = 3.5
+        }
+    }
+
+Controller
+
+draw_text_color(view_xview[0],view_yview[0],"Wreckage:",c_white,c_white,c_white,c_white, 1)
+draw_text_color(view_xview[0] + 80,view_yview[0],obj_car1.wreckage,c_white,c_white,c_white,c_white, 1);
+
+draw_text_color(view_xview[1],view_yview[1],"Wreckage:",c_white,c_white,c_white,c_white, 1)
+draw_text_color(view_xview[1] + 80,view_yview[1],obj_car2.wreckage,c_white,c_white,c_white,c_white, 1);
+
+
+
+
+
+draw_text_color(view_xview[0],view_yview[0] + 16,"Laps:",c_white,c_white,c_white,c_white, 1)
+draw_text_color(view_xview[0] + 80,view_yview[0] + 16,floor(obj_car1.laps),c_white,c_white,c_white,c_white, 1);
+
+draw_text_color(view_xview[1],view_yview[1] + 16,"Laps:",c_white,c_white,c_white,c_white, 1)
+draw_text_color(view_xview[1] + 80,view_yview[1] + 16,floor(obj_car2.laps),c_white,c_white,c_white,c_white, 1);
+
+//draw_text_color(0,0,"wreckage:",c_white,c_white,c_white,c_white, 1)
+//draw_text_color(80,0,obj_car1.wreckage,c_white,c_white,c_white,c_white, 1);
+
+draw_text_color(view_xview[0],view_yview[0] + 32,"Direction:",c_white,c_white,c_white,c_white, 1)
+draw_text_color(view_xview[0] + 80,view_yview[0] + 32,obj_car1.direction,c_white,c_white,c_white,c_white, 1);
+
+draw_text_color(view_xview[1],view_yview[1] + 32,"Direction:",c_white,c_white,c_white,c_white, 1)
+draw_text_color(view_xview[1] + 80,view_yview[1] + 32,obj_car2.direction,c_white,c_white,c_white,c_white, 1);
+
+CREATION CODE 1
+
+direction = 90
+speed = 0
+acceleration = 0
+wreckage = 400
+canshoot1 = 1
+radius = 0.01
+degrees = 0
+landmineammo = 0
+laps = 0.75
+dampening = .1
+mass = 3486
+traction = 0.9
+gravitation = 10
+theta = 0
+torque = 0
+collisionpoint = 0
+can_collide1 = 1
+
+
+criticalturnspeed = 10.7 //equation intersection of two functions calculated once
+
+CREATION CODE 2
+
+direction = 90
+speed = 0
+acceleration = 0
+wreckage = 600
+canshoot2 = 1
+radius = 0.01
+degrees = 0
+teleporterammo = 0
+laps = 0.75
+dampening = .1
+mass = 3486
+traction = 0.9
+gravitation = 10
+theta = 0
+torque = 0
+collisionpoint = 0
+can_collide2 = 1
+
+CAR 1 STEP
+
+//Movement and Turning 
+
+if keyboard_check_pressed(ord('W')) 
+    {
+    acceleration = 0.6
+    }
+if keyboard_check_pressed(ord('S')) 
+    {
+    acceleration = -0.6
+    }
+
+if speed = 0 if not keyboard_check_direct(ord('W')) if not keyboard_check_direct(ord('S')) 
+    {
+    acceleration = 0
+    }
+
+if speed > 0 if not keyboard_check_direct(ord('W')) if not keyboard_check_direct(ord('S')) 
+    {
+    acceleration = -0.2
+    }
+
+if speed < 0 if not keyboard_check_direct(ord('W')) if not keyboard_check_direct(ord('S')) 
+    {
+    acceleration = 0.2
+    }
+
+    
+    
+    
+    
+    
+//Image_angle
+
+image_angle = 180/pi*(arctan2(sin(direction*pi/180),cos(direction*pi/180))) - 90
+    
+
+
+
+
+
+
+
+    
+//Turning
+
+neg = choose(0,1)
+
+if neg = 0 incremental = random(.25)
+if neg = 1 incremental = -random(.25)
+
+if speed > 0 
+    {
+    if speed < criticalturnspeed 
+        {
+        radius = 13
+        degrees = speed/radius + incremental
+        }
+    if speed > criticalturnspeed 
+        {
+        radius = sqr(speed)/(traction*gravitation)
+        degrees = speed/radius + incremental
+        }
+    }
+
+if speed < 0 
+    {
+    if speed > -criticalturnspeed 
+        {
+        radius = 13
+        degrees = speed/radius + incremental
+        }
+    if speed < -criticalturnspeed 
+        {
+        radius = sqr(speed)/(traction*gravitation)
+        degrees = speed/radius + incremental
+        }
+    }
+
+if speed = 0 
+    {
+    degrees = 0;
+    }
+
+if keyboard_check_direct(ord('A')) 
+    {
+    direction += 5*degrees
+    }
+if keyboard_check_direct(ord('D')) 
+    {
+    direction -= 5*degrees
+    }
+
+if not keyboard_check_direct(ord('A')) if not keyboard_check_direct(ord('D')) 
+    {
+    direction += 0
+    }
+    
+
+    
+    
+    
+    
+//Terminal Velocity    
+
+speed = speed + acceleration
+
+if speed > 32 speed = 32
+if speed < -24 speed = -24
+
+
+
+
+
+
+
+
+//Shooting and Ammo
+
+if canshoot1 = 1 if keyboard_check_direct(vk_lshift) 
+    {
+    alarm[0] = 3
+    canshoot1 = 0
+    instance_create(x,y,obj_hitbox_car1)
+    instance_create(x,y,obj_bullet_car1)
+    }
+
+    
+    
+    
+    
+    
+    
+//Special: Landmines
+    
+    
+if keyboard_check_pressed(ord('E'))
+    {
+    if landmineammo > 0
+        {
+        instance_create(x - 48*cos(direction*pi/180),y + 48*sin(direction*pi/180), obj_landmine)
+        landmineammo -= 1
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+//Respawning
+    
+if wreckage < 0
+    {
+    if laps mod 1 == 0
+        {
+        wreckage = 400
+        direction = 90
+        speed = 0
+        x = obj_finish.x
+        y = obj_finish.y
+        }
+    
+    if (laps + .25) mod 1 == 0 
+        {
+        wreckage = 400
+        direction = 180
+        speed = 0
+        x = obj_checkpnt3.x
+        y = obj_checkpnt3.y
+        }
+    
+    if (laps + .5) mod 1 == 0 
+        {
+        wreckage = 400
+        direction = 270
+
+CAR 2 STEP
+
+if keyboard_check_pressed(vk_up) 
+    {
+    acceleration = 0.3
+    }
+if keyboard_check_pressed(vk_down) 
+    {
+    acceleration = -0.3
+    }
+
+if speed = 0 if not keyboard_check_direct(vk_up) if not keyboard_check_direct(vk_down) 
+    {
+    acceleration = 0
+    }
+
+if speed > 0 if not keyboard_check_direct(vk_up) if not keyboard_check_direct(vk_down) 
+    {
+    acceleration = -0.2
+    }
+
+if speed < 0 if not keyboard_check_direct(vk_up) if not keyboard_check_direct(vk_down) 
+    {
+    acceleration = 0.2
+    }
+
+//Definite image_angle fix
+
+image_angle = 180/pi*(arctan2(sin(direction*pi/180),cos(direction*pi/180))) -90
+    
+//OMG TURNING FUNCTION GOES HAR
+
+Traction = 1
+
+Gravity = 10
+
+neg = choose(0,1)
+
+if neg = 0 incremental = random(.25)
+if neg = 1 incremental = -random(.25)
+if speed > 0 
+    {
+    if speed < 10.7 
+        {
+        radius = 13
+        degrees = speed/radius + incremental
+        }
+    if speed > 10.7 
+        {
+        radius = sqr(speed)/(Traction*Gravity)
+        degrees = speed/radius + incremental
+        }
+    }
+
+if speed < 0 
+    {
+    if speed > -10.7 
+        {
+        radius = 13
+        degrees = speed/radius + incremental
+        }
+    if speed < -10.7 
+        {
+        radius = sqr(speed)/(Traction*Gravity)
+        degrees = speed/radius + incremental
+        }
+    }
+
+if speed = 0 degrees = 0
+
+if keyboard_check_direct(vk_left) 
+    {
+    image_angle += 6*degrees
+    direction += 6*degrees
+    }
+if keyboard_check_direct(vk_right) 
+    {
+    image_angle -= 6*degrees
+    direction -= 6*degrees
+    }
+
+
+
+if not keyboard_check_direct(vk_left) if not keyboard_check_direct(vk_right) 
+    {
+    image_angle += 0
+    direction += 0
+    }
+
+speed = speed + acceleration
+
+if speed > 24 speed = 24
+if speed < -20 speed = -20
+
+if canshoot2 = 1 if keyboard_check_direct(vk_rshift) 
+    {
+    instance_create(x,y,obj_hitbox_car2)
+    instance_create(x,y,obj_bullet_car2)
+    alarm[0] = 3
+    canshoot = 0
+    }
+
+if keyboard_check_pressed(ord('L'))
+    {
+    if teleporterammo > 0
+    instance_create(x - 48*cos(direction*pi/180), y + 48*sin(direction*pi/180), obj_teleporter_exit)
+    alarm[1] = 150
+    teleporterammo -= 1
+    }
+    
+if wreckage < 0
+    {
+    if laps mod 1 == 0
+        {
+        wreckage = 600
+        direction = 90
+        speed = 0
+        x = obj_finish.x
+        y = obj_finish.y
+        }
+    
+    if (laps + .25) mod 1 == 0 
+        {
+        wreckage = 600
+        direction = 180
+        speed = 0
+        x = obj_checkpnt3.x
+        y = obj_checkpnt3.y
+        }
+    
+    if (laps + .5) mod 1 == 0 
+        {
+        wreckage = 600
+        direction = 270
+        speed = 0
+        x = obj_checkpnt2.x
+        y = obj_checkpnt2.y
+        }
+    
+    if (laps + .75) mod 1 == 0 
+        {
+        wreckage = 600
+        direction = 0
+        speed = 0
+        x = obj_checkpnt1.x
+        y = obj_checkpnt1.y
+        }
+        
+    }
+    
+momentumx = mass*hspeed
+momentumy = mass*vspeed
+
+NOTES:
+
+ADD ALARM 11
